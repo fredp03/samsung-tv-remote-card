@@ -12,9 +12,10 @@ A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful 
 
 - 🎨 **Beautiful Design** - Sleek dark theme matching Samsung's aesthetic
 - 📺 **Samsung TV Optimized** - Uses native Samsung TV key commands
-- 🔘 **D-Pad Navigation** - Up, Down, Left, Right directional controls
+- 🔘 **D-Pad Navigation** - Up, Down, Left, Right, and Center Select (OK) controls
 - ⚡ **Essential Controls** - Power, Home, Back, Play/Pause, and Mute
 - 📐 **Scalable** - Adjust the remote size from 50% to 200%
+- 📳 **Haptic Feedback** - Vibration feedback on button presses (requires HA companion app)
 - 🔧 **Visual Editor** - Full configuration UI support
 - 🔌 **Multiple Integration Support** - Works with standard Samsung TV integration and SamsungTV Smart custom integration
 
@@ -57,6 +58,7 @@ A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful 
 type: custom:samsung-tv-remote-card
 entity: media_player.samsung_tv
 scale: 100
+haptic: true
 use_samsungtv_smart: false
 ```
 
@@ -66,6 +68,7 @@ use_samsungtv_smart: false
 |--------|------|---------|-------------|
 | `entity` | string | **Required** | Your Samsung TV `media_player` or `remote` entity |
 | `scale` | number | `100` | Scale the remote size (50-200%) |
+| `haptic` | boolean | `true` | Enable haptic feedback (vibration) on button presses |
 | `use_samsungtv_smart` | boolean | `false` | Enable if using the [SamsungTV Smart Component](https://github.com/ollo69/ha-samsungtv-smart) custom integration |
 
 ## Supported Keys
