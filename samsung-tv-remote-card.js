@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.1 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.2 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -50,6 +50,17 @@ class SamsungTvRemoteCard extends LitElement {
     .remote-wrapper {
       display: inline-block;
       transform-origin: top left;
+    }
+
+    .remote-wrapper.responsive {
+      display: block;
+      width: 100%;
+    }
+
+    .remote-wrapper.responsive .remote {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 212 / 468;
     }
 
     .remote {
@@ -278,6 +289,7 @@ class SamsungTvRemoteCard extends LitElement {
     }
     this.config = {
       scale: 100,
+      layout: "fixed",
       haptic: true,
       use_samsungtv_smart: false,
       ...config,
@@ -300,17 +312,22 @@ class SamsungTvRemoteCard extends LitElement {
       </div>`;
     }
 
+    const isResponsive = this.config.layout === "responsive";
     const scaledWidth = 212 * this._scale;
     const scaledHeight = 468 * this._scale;
 
+    const wrapperClass = isResponsive ? "remote-wrapper responsive" : "remote-wrapper";
+    const wrapperStyle = isResponsive ? "" : `width: ${scaledWidth}px; height: ${scaledHeight}px;`;
+    const remoteStyle = isResponsive ? "" : `transform: scale(${this._scale}); transform-origin: top left;`;
+
     return html`
       <div
-        class="remote-wrapper"
-        style="width: ${scaledWidth}px; height: ${scaledHeight}px;"
+        class="${wrapperClass}"
+        style="${wrapperStyle}"
       >
         <div
           class="remote"
-          style="transform: scale(${this._scale}); transform-origin: top left;"
+          style="${remoteStyle}"
         >
           <!-- Power Button -->
           <div class="control-buttons-top">
@@ -651,6 +668,7 @@ class SamsungTvRemoteCard extends LitElement {
     return {
       entity: "",
       scale: 100,
+      layout: "fixed",
       haptic: true,
       use_samsungtv_smart: false,
     };
@@ -737,6 +755,20 @@ class SamsungTvRemoteCardEditor extends LitElement {
         </div>
 
         <div class="form-row">
+          <label>Layout Mode</label>
+          <select
+            .value=${this.config.layout || "fixed"}
+            @change=${(e) => this._valueChanged("layout", e.target.value)}
+          >
+            <option value="fixed" ?selected=${this.config.layout !== "responsive"}>Fixed</option>
+            <option value="responsive" ?selected=${this.config.layout === "responsive"}>Responsive</option>
+          </select>
+          <span class="helper-text"
+            >Fixed: use scale setting. Responsive: fills card width automatically</span
+          >
+        </div>
+
+        <div class="form-row">
           <label>Scale (%)</label>
           <input
             type="number"
@@ -747,7 +779,7 @@ class SamsungTvRemoteCardEditor extends LitElement {
               this._valueChanged("scale", parseInt(e.target.value))}
           />
           <span class="helper-text"
-            >Scale the remote size (50-200%, default: 100%)</span
+            >Scale the remote size (50-200%, only applies in Fixed layout mode)</span
           >
         </div>
 
