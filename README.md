@@ -1,7 +1,7 @@
 # Samsung TV Remote Card
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![GitHub Release](https://img.shields.io/github/v/release/fredparsons/samsung-tv-remote-card?style=flat-square)](https://github.com/fredparsons/samsung-tv-remote-card/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/fredp03/samsung-tv-remote-card?style=flat-square)](https://github.com/fredp03/samsung-tv-remote-card/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful design inspired by physical Samsung remotes with D-pad navigation, power, home, back, play/pause, and mute controls.
@@ -25,7 +25,7 @@ A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful 
 1. Open HACS in Home Assistant
 2. Click the three dots in the top right corner
 3. Select "Custom repositories"
-4. Add this repository URL: `https://github.com/fredparsons/samsung-tv-remote-card`
+4. Add this repository URL: `https://github.com/fredp03/samsung-tv-remote-card`
 5. Category: **Dashboard**
 6. Click "Add"
 7. Find "Samsung TV Remote Card" in HACS and click "Download"
@@ -33,7 +33,7 @@ A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful 
 
 ### Manual Installation
 
-1. Download `samsung-tv-remote-card.js` from the [latest release](https://github.com/fredparsons/samsung-tv-remote-card/releases)
+1. Download `samsung-tv-remote-card.js` from the [latest release](https://github.com/fredp03/samsung-tv-remote-card/releases)
 2. Copy it to your `config/www/` directory
 3. Add the resource in Home Assistant:
    - Go to **Settings** → **Dashboards** → **Resources** (three dots menu)
