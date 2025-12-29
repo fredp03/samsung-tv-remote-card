@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.2 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.3 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -28,13 +28,7 @@ class SamsungTvRemoteCard extends LitElement {
   static properties = {
     hass: {},
     config: {},
-    _scale: { state: true },
   };
-
-  constructor() {
-    super();
-    this._scale = 1;
-  }
 
   static styles = css`
     :host {
@@ -42,8 +36,6 @@ class SamsungTvRemoteCard extends LitElement {
       --button-area-bg: linear-gradient(135deg, #383838 100%, #3e3e3e 0%);
       --text-color: #d5d5d5;
       --icon-color: #d5d5d5;
-      --remote-width: 212px;
-      --remote-height: 468px;
       display: block;
     }
 
@@ -59,62 +51,76 @@ class SamsungTvRemoteCard extends LitElement {
 
     .remote-wrapper.responsive .remote {
       width: 100%;
-      height: auto;
-      aspect-ratio: 212 / 468;
+      height: 100%;
     }
 
     .remote {
+      width: 100%;
+      height: 100%;
       background: var(--remote-bg);
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: 1px 1px 3px rgba(22, 22, 22, 0.9);
       overflow: hidden;
       border-radius: 12px;
       display: inline-flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      width: var(--remote-width);
-      height: var(--remote-height);
     }
 
-    /* Top control buttons */
+    /* Top control buttons (Power) */
     .control-buttons-top {
       align-self: stretch;
-      height: 54px;
-      display: flex;
+      padding: 37px 9px;
+      display: inline-flex;
       justify-content: flex-end;
-      align-items: center;
-      gap: 56px;
+      align-items: flex-start;
+      gap: 10px;
     }
 
-    /* D-Pad / Navigation area */
+    /* D-Pad / Navigation area - flexible layout */
     .remote-buttons {
       align-self: stretch;
+      flex: 1 1 0;
       padding: 22px;
       background: var(--button-area-bg);
       box-shadow: 1px 1px 3px rgba(44, 44, 44, 0.9);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .buttons {
-      align-self: stretch;
-      height: 168px;
-      display: flex;
-      flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      position: relative;
     }
 
-    .top-buttons,
-    .middle-buttons,
-    .bottom-buttons {
+    .spacer {
       align-self: stretch;
-      height: 38px;
-      position: relative;
+      flex: 1 1 0;
+      background: rgba(217, 217, 217, 0);
+    }
+
+    .dpad-container {
+      align-self: stretch;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .top-row,
+    .bottom-row {
+      align-self: stretch;
+      flex: 1 1 0;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .middle-row {
+      align-self: stretch;
+      flex: 1 1 0;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .nav-button {
@@ -122,9 +128,8 @@ class SamsungTvRemoteCard extends LitElement {
       height: 38px;
       padding-left: 5px;
       padding-right: 5px;
-      position: absolute;
       border-radius: 7px;
-      display: inline-flex;
+      display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
@@ -143,85 +148,60 @@ class SamsungTvRemoteCard extends LitElement {
       transform: scale(0.95);
     }
 
-    .up {
-      left: 65px;
-      top: 0px;
-    }
-
-    .down {
-      left: 65px;
-      top: 0px;
-    }
-
-    .left {
-      left: 0px;
-      top: 0px;
-    }
-
-    .right {
-      left: 130px;
-      top: 0px;
-    }
-
-    /* Center select button */
+    /* Center select button with styled circle */
     .center-button {
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       cursor: pointer;
       transition: all 0.15s ease;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.15);
+      background: #d5d5d5;
+      border: none;
+      box-shadow: 
+        -1px -1px 2px rgba(119, 119, 119, 0.5),
+        1px 1px 2px rgba(255, 255, 255, 0.3),
+        inset 1px 1px 3px rgba(119, 119, 119, 0.9),
+        inset -1px -1px 2px rgba(255, 255, 255, 0.9);
       -webkit-tap-highlight-color: transparent;
     }
 
     .center-button:hover {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.25);
+      background: #e0e0e0;
     }
 
     .center-button:active {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translate(-50%, -50%) scale(0.95);
-    }
-
-    .center-button .ok-text {
-      color: var(--icon-color, #d5d5d5);
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      background: #c8c8c8;
+      transform: scale(0.95);
     }
 
     /* Middle control buttons (Back, Home, Play/Pause) */
     .control-buttons-middle {
       align-self: stretch;
-      padding-left: 8px;
-      padding-right: 8px;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      display: flex;
+      padding: 78px 8px;
+      display: inline-flex;
       justify-content: space-between;
+      align-items: center;
+    }
+
+    .icon-wrapper {
+      width: 65.33px;
+      height: 54px;
+      display: flex;
+      justify-content: center;
       align-items: center;
     }
 
     /* Bottom control (Mute) */
     .control-buttons-bottom {
       align-self: stretch;
-      padding-left: 22px;
-      padding-right: 22px;
-      padding-top: 13px;
-      padding-bottom: 13px;
-      display: flex;
+      padding: 13px 85px;
+      display: inline-flex;
       justify-content: center;
-      align-items: center;
-      gap: 56px;
+      align-items: flex-start;
+      gap: 10px;
     }
 
     .icon-button {
@@ -264,10 +244,7 @@ class SamsungTvRemoteCard extends LitElement {
     .icon-button.play-pause {
       width: 54px;
       height: 54px;
-      padding-left: 15px;
-      padding-right: 15px;
-      padding-top: 12px;
-      padding-bottom: 12px;
+      padding: 12px 15px;
     }
 
     svg {
@@ -288,13 +265,10 @@ class SamsungTvRemoteCard extends LitElement {
       throw new Error("You need to define an entity (media_player or remote)");
     }
     this.config = {
-      scale: 100,
-      layout: "fixed",
       haptic: true,
       use_samsungtv_smart: false,
       ...config,
     };
-    this._scale = this.config.scale / 100;
   }
 
   render() {
@@ -312,23 +286,9 @@ class SamsungTvRemoteCard extends LitElement {
       </div>`;
     }
 
-    const isResponsive = this.config.layout === "responsive";
-    const scaledWidth = 212 * this._scale;
-    const scaledHeight = 468 * this._scale;
-
-    const wrapperClass = isResponsive ? "remote-wrapper responsive" : "remote-wrapper";
-    const wrapperStyle = isResponsive ? "" : `width: ${scaledWidth}px; height: ${scaledHeight}px;`;
-    const remoteStyle = isResponsive ? "" : `transform: scale(${this._scale}); transform-origin: top left;`;
-
     return html`
-      <div
-        class="${wrapperClass}"
-        style="${wrapperStyle}"
-      >
-        <div
-          class="remote"
-          style="${remoteStyle}"
-        >
+      <div class="remote-wrapper responsive">
+        <div class="remote">
           <!-- Power Button -->
           <div class="control-buttons-top">
             <button
@@ -353,13 +313,14 @@ class SamsungTvRemoteCard extends LitElement {
             </button>
           </div>
 
-          <!-- D-Pad Navigation -->
+          <!-- D-Pad Navigation with flexible layout -->
           <div class="remote-buttons">
-            <div class="buttons">
-              <!-- Up -->
-              <div class="top-buttons">
+            <div class="spacer"></div>
+            <div class="dpad-container">
+              <!-- Up Row -->
+              <div class="top-row">
                 <button
-                  class="nav-button up"
+                  class="nav-button"
                   @click=${() => this._handleButtonClick("up")}
                   title="Up"
                 >
@@ -371,7 +332,7 @@ class SamsungTvRemoteCard extends LitElement {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M1.52173 24.7391L14 12.2609L26.4783 24.7391"
+                      d="M1.52197 24.7391L14.0002 12.2609L26.4785 24.7391"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -381,10 +342,10 @@ class SamsungTvRemoteCard extends LitElement {
                 </button>
               </div>
 
-              <!-- Left and Right -->
-              <div class="middle-buttons">
+              <!-- Middle Row: Left, Select, Right -->
+              <div class="middle-row">
                 <button
-                  class="nav-button left"
+                  class="nav-button"
                   @click=${() => this._handleButtonClick("left")}
                   title="Left"
                 >
@@ -396,7 +357,7 @@ class SamsungTvRemoteCard extends LitElement {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M20.2392 30.9783L7.76099 18.5L20.2392 6.02173"
+                      d="M20.239 30.9783L7.76074 18.5L20.239 6.02173"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -404,8 +365,38 @@ class SamsungTvRemoteCard extends LitElement {
                     />
                   </svg>
                 </button>
+
+                <!-- Center Select Button -->
                 <button
-                  class="nav-button right"
+                  class="center-button"
+                  @click=${() => this._handleButtonClick("enter")}
+                  title="Select"
+                >
+                  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <filter id="select-filter" x="0" y="0" width="44" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dx="-1" dy="-1" />
+                        <feGaussianBlur stdDeviation="1" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.467 0 0 0 0 0.467 0 0 0 0.5 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                        <feOffset dx="1" dy="1" />
+                        <feGaussianBlur stdDeviation="1" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+                        <feBlend mode="normal" in2="effect1" result="effect2" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect2" result="shape" />
+                      </filter>
+                    </defs>
+                    <g filter="url(#select-filter)">
+                      <circle cx="22" cy="22" r="19" fill="#D5D5D5" />
+                    </g>
+                  </svg>
+                </button>
+
+                <button
+                  class="nav-button"
                   @click=${() => this._handleButtonClick("right")}
                   title="Right"
                 >
@@ -417,7 +408,7 @@ class SamsungTvRemoteCard extends LitElement {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M7.76099 6.02173L20.2392 18.5L7.76099 30.9783"
+                      d="M7.76074 6.02173L20.239 18.5L7.76074 30.9783"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -427,10 +418,10 @@ class SamsungTvRemoteCard extends LitElement {
                 </button>
               </div>
 
-              <!-- Down -->
-              <div class="bottom-buttons">
+              <!-- Down Row -->
+              <div class="bottom-row">
                 <button
-                  class="nav-button down"
+                  class="nav-button"
                   @click=${() => this._handleButtonClick("down")}
                   title="Down"
                 >
@@ -442,7 +433,7 @@ class SamsungTvRemoteCard extends LitElement {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M26.4783 12.2609L14 24.7391L1.52173 12.2609"
+                      d="M26.4785 12.2609L14.0002 24.7391L1.52197 12.2609"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -451,91 +442,89 @@ class SamsungTvRemoteCard extends LitElement {
                   </svg>
                 </button>
               </div>
-
-              <!-- Center Select Button -->
-              <button
-                class="center-button"
-                @click=${() => this._handleButtonClick("enter")}
-                title="Select"
-              >
-                <span class="ok-text">OK</span>
-              </button>
             </div>
+            <div class="spacer"></div>
           </div>
 
           <!-- Back, Home, Play/Pause buttons -->
           <div class="control-buttons-middle">
             <!-- Back -->
-            <button
-              class="icon-button medium"
-              @click=${() => this._handleButtonClick("back")}
-              title="Back"
-            >
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div class="icon-wrapper">
+              <button
+                class="icon-button medium"
+                @click=${() => this._handleButtonClick("back")}
+                title="Back"
               >
-                <path
-                  d="M25.125 20.4999V21.9999H24.875V20.4999H25.125ZM18 12.3934C19.8396 12.5143 21.58 13.2967 22.8916 14.6083C24.2032 15.9199 24.9856 17.6603 25.1064 19.4999H24.8564C24.736 17.7266 23.9795 16.0497 22.7148 14.785C21.4501 13.5203 19.7733 12.7639 18 12.6434V12.3934ZM6.30273 13.6249L10.9854 18.3075L10.8076 18.4852L5.94727 13.6249H6.30273ZM17 12.3749V12.6249H6.7168L6.5918 12.4999L6.7168 12.3749H17ZM10.9854 6.69226L6.30273 11.3749H5.94727L10.8076 6.51453L10.9854 6.69226Z"
-                  fill="var(--icon-color, #D5D5D5)"
-                  stroke="var(--icon-color, #D5D5D5)"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M25.125 20.5V22H24.875V20.5H25.125ZM18 12.3936C19.8396 12.5144 21.58 13.2968 22.8916 14.6084C24.2032 15.92 24.9856 17.6604 25.1064 19.5H24.8564C24.736 17.7267 23.9795 16.0499 22.7148 14.7852C21.4501 13.5205 19.7733 12.764 18 12.6436V12.3936ZM6.30273 13.625L10.9854 18.3076L10.8076 18.4854L5.94727 13.625H6.30273ZM17 12.375V12.625H6.7168L6.5918 12.5L6.7168 12.375H17ZM10.9854 6.69238L6.30273 11.375H5.94727L10.8076 6.51465L10.9854 6.69238Z"
+                    fill="var(--icon-color, #D5D5D5)"
+                    stroke="var(--icon-color, #D5D5D5)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
 
             <!-- Home -->
-            <button
-              class="icon-button medium"
-              @click=${() => this._handleButtonClick("home")}
-              title="Home"
-            >
-              <svg
-                width="30"
-                height="30"
-                viewBox="0 0 30 30"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div class="icon-wrapper">
+              <button
+                class="icon-button medium"
+                @click=${() => this._handleButtonClick("home")}
+                title="Home"
               >
-                <path
-                  d="M14.9961 6.0188C15.3451 6.0188 15.6585 6.10866 15.9414 6.28931L16.0605 6.37231L22.792 11.468L22.7949 11.4709C23.0142 11.6317 23.1865 11.8356 23.3115 12.0872V12.0881C23.4374 12.3391 23.5 12.6039 23.5 12.885V23.7502C23.5 24.0151 23.4042 24.2445 23.1992 24.4495C22.9943 24.6544 22.7649 24.7502 22.5 24.7502H17.6445C17.4208 24.7501 17.2454 24.6773 17.1016 24.5334H17.1025C16.9581 24.3884 16.8849 24.2132 16.8848 23.9905V17.6448C16.8846 17.5068 16.7727 17.3948 16.6348 17.3948H13.3652C13.2273 17.3948 13.1154 17.5068 13.1152 17.6448V23.9905C13.1151 24.2142 13.0423 24.3896 12.8984 24.5334C12.7544 24.6775 12.5792 24.7502 12.3564 24.7502H7.5C7.23508 24.7502 7.00574 24.6544 6.80078 24.4495C6.59584 24.2445 6.50005 24.0151 6.5 23.7502V12.885L6.51172 12.677C6.53524 12.4723 6.59411 12.2763 6.68848 12.0881C6.81452 11.8368 6.98706 11.6329 7.20605 11.4719L7.20801 11.469L13.9395 6.37231L13.9404 6.37134C14.2484 6.1362 14.5973 6.01883 14.9961 6.0188ZM15 6.76978C14.7719 6.76978 14.5659 6.84235 14.3936 6.98755L7.66211 12.0598L7.65234 12.0686C7.53407 12.1674 7.43677 12.2831 7.36426 12.4153C7.2855 12.5591 7.24917 12.7177 7.25 12.885V23.7502C7.25011 23.8882 7.36199 24.0002 7.5 24.0002H12.1152C12.2531 24.0001 12.3651 23.8881 12.3652 23.7502V17.4036C12.3653 17.1811 12.4382 17.0067 12.583 16.8625V16.8616C12.7272 16.7167 12.9025 16.6438 13.125 16.6438H16.875C17.0974 16.6438 17.2728 16.7166 17.418 16.8616C17.562 17.0056 17.6347 17.1808 17.6348 17.4036V23.7502C17.6349 23.8881 17.7469 24.0001 17.8848 24.0002H22.5C22.638 24.0002 22.7499 23.8882 22.75 23.7502V12.885C22.75 12.7191 22.7133 12.5612 22.6367 12.4172C22.5644 12.2815 22.4661 12.164 22.3447 12.0657L22.3379 12.0608L15.6084 6.98755H15.6074C15.4345 6.84255 15.2283 6.76978 15 6.76978Z"
-                  fill="var(--icon-color, #D5D5D5)"
-                  stroke="var(--icon-color, #D5D5D5)"
-                  stroke-width="0.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+                <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 30 30"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.9961 6.0188C15.3451 6.0188 15.6585 6.10866 15.9414 6.28931L16.0605 6.37231L22.792 11.468L22.7949 11.4709C23.0142 11.6317 23.1865 11.8356 23.3115 12.0872V12.0881C23.4374 12.3391 23.5 12.6039 23.5 12.885V23.7502C23.5 24.0151 23.4042 24.2445 23.1992 24.4495C22.9943 24.6544 22.7649 24.7502 22.5 24.7502H17.6445C17.4208 24.7501 17.2454 24.6773 17.1016 24.5334H17.1025C16.9581 24.3884 16.8849 24.2132 16.8848 23.9905V17.6448C16.8846 17.5068 16.7727 17.3948 16.6348 17.3948H13.3652C13.2273 17.3948 13.1154 17.5068 13.1152 17.6448V23.9905C13.1151 24.2142 13.0423 24.3896 12.8984 24.5334C12.7544 24.6775 12.5792 24.7502 12.3564 24.7502H7.5C7.23508 24.7502 7.00574 24.6544 6.80078 24.4495C6.59584 24.2445 6.50005 24.0151 6.5 23.7502V12.885L6.51172 12.677C6.53524 12.4723 6.59411 12.2763 6.68848 12.0881C6.81452 11.8368 6.98706 11.6329 7.20605 11.4719L7.20801 11.469L13.9395 6.37231L13.9404 6.37134C14.2484 6.1362 14.5973 6.01883 14.9961 6.0188ZM15 6.76978C14.7719 6.76978 14.5659 6.84235 14.3936 6.98755L7.66211 12.0598L7.65234 12.0686C7.53407 12.1674 7.43677 12.2831 7.36426 12.4153C7.2855 12.5591 7.24917 12.7177 7.25 12.885V23.7502C7.25011 23.8882 7.36199 24.0002 7.5 24.0002H12.1152C12.2531 24.0001 12.3651 23.8881 12.3652 23.7502V17.4036C12.3653 17.1811 12.4382 17.0067 12.583 16.8625V16.8616C12.7272 16.7167 12.9025 16.6438 13.125 16.6438H16.875C17.0974 16.6438 17.2728 16.7166 17.418 16.8616C17.562 17.0056 17.6347 17.1808 17.6348 17.4036V23.7502C17.6349 23.8881 17.7469 24.0001 17.8848 24.0002H22.5C22.638 24.0002 22.7499 23.8882 22.75 23.7502V12.885C22.75 12.7191 22.7133 12.5612 22.6367 12.4172C22.5644 12.2815 22.4661 12.164 22.3447 12.0657L22.3379 12.0608L15.6084 6.98755H15.6074C15.4345 6.84255 15.2283 6.76978 15 6.76978Z"
+                    fill="var(--icon-color, #D5D5D5)"
+                    stroke="var(--icon-color, #D5D5D5)"
+                    stroke-width="0.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
 
             <!-- Play/Pause -->
-            <button
-              class="icon-button play-pause"
-              @click=${() => this._handleButtonClick("play_pause")}
-              title="Play/Pause"
-            >
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+            <div class="icon-wrapper">
+              <button
+                class="icon-button play-pause"
+                @click=${() => this._handleButtonClick("play_pause")}
+                title="Play/Pause"
               >
-                <mask id="path-1-inside-1_23_414" fill="white">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <mask id="path-1-inside-1_24_534" fill="white">
+                    <path
+                      d="M16.74 20.1655C17.1973 20.1655 17.5671 19.8154 17.5671 19.3581V4.90541C17.567 4.79726 17.5455 4.6902 17.5038 4.59042C17.4621 4.49065 17.401 4.40013 17.3241 4.32409C17.2472 4.24806 17.1559 4.18802 17.0557 4.14744C16.9554 4.10687 16.8481 4.08656 16.74 4.08769C16.2823 4.08769 15.9026 4.44769 15.9026 4.90541V19.3581C15.9026 19.8154 16.2823 20.1655 16.7396 20.1655M23.1724 20.1655C23.6297 20.1655 23.9996 19.8154 23.9996 19.3581V4.90541C23.9995 4.79726 23.9779 4.6902 23.9362 4.59042C23.8945 4.49065 23.8334 4.40013 23.7565 4.32409C23.6796 4.24806 23.5884 4.18802 23.4881 4.14744C23.3879 4.10687 23.2806 4.08656 23.1724 4.08769C22.7151 4.08769 22.3354 4.44769 22.3354 4.90541V19.3581C22.3354 19.8154 22.7151 20.1655 23.1724 20.1655ZM1.401 19.7764C1.8 19.7764 2.13086 19.65 2.52043 19.4164L12.4376 13.5767C13.1284 13.1683 13.4301 12.6814 13.4301 12.1268C13.4301 11.5723 13.1284 11.0854 12.4376 10.6765L2.52086 4.83726C2.12186 4.60369 1.80086 4.47726 1.40143 4.47726C0.642857 4.47726 0 5.06098 0 6.15126V18.1024C0 19.1927 0.642 19.7764 1.401 19.7764ZM1.83 17.976C1.68386 17.976 1.56686 17.8787 1.56686 17.6841V6.56955C1.56686 6.37498 1.68386 6.27769 1.82957 6.27769C1.89814 6.27769 1.96586 6.30683 2.06314 6.36512L11.319 11.8543C11.4549 11.9323 11.5329 11.9905 11.5329 12.1268C11.5329 12.2533 11.4549 12.3214 11.3186 12.3994L2.06314 17.8885C1.97571 17.9468 1.89829 17.976 1.83 17.976Z"
+                    />
+                  </mask>
                   <path
                     d="M16.74 20.1655C17.1973 20.1655 17.5671 19.8154 17.5671 19.3581V4.90541C17.567 4.79726 17.5455 4.6902 17.5038 4.59042C17.4621 4.49065 17.401 4.40013 17.3241 4.32409C17.2472 4.24806 17.1559 4.18802 17.0557 4.14744C16.9554 4.10687 16.8481 4.08656 16.74 4.08769C16.2823 4.08769 15.9026 4.44769 15.9026 4.90541V19.3581C15.9026 19.8154 16.2823 20.1655 16.7396 20.1655M23.1724 20.1655C23.6297 20.1655 23.9996 19.8154 23.9996 19.3581V4.90541C23.9995 4.79726 23.9779 4.6902 23.9362 4.59042C23.8945 4.49065 23.8334 4.40013 23.7565 4.32409C23.6796 4.24806 23.5884 4.18802 23.4881 4.14744C23.3879 4.10687 23.2806 4.08656 23.1724 4.08769C22.7151 4.08769 22.3354 4.44769 22.3354 4.90541V19.3581C22.3354 19.8154 22.7151 20.1655 23.1724 20.1655ZM1.401 19.7764C1.8 19.7764 2.13086 19.65 2.52043 19.4164L12.4376 13.5767C13.1284 13.1683 13.4301 12.6814 13.4301 12.1268C13.4301 11.5723 13.1284 11.0854 12.4376 10.6765L2.52086 4.83726C2.12186 4.60369 1.80086 4.47726 1.40143 4.47726C0.642857 4.47726 0 5.06098 0 6.15126V18.1024C0 19.1927 0.642 19.7764 1.401 19.7764ZM1.83 17.976C1.68386 17.976 1.56686 17.8787 1.56686 17.6841V6.56955C1.56686 6.37498 1.68386 6.27769 1.82957 6.27769C1.89814 6.27769 1.96586 6.30683 2.06314 6.36512L11.319 11.8543C11.4549 11.9323 11.5329 11.9905 11.5329 12.1268C11.5329 12.2533 11.4549 12.3214 11.3186 12.3994L2.06314 17.8885C1.97571 17.9468 1.89829 17.976 1.83 17.976Z"
+                    fill="var(--icon-color, #D5D5D5)"
                   />
-                </mask>
-                <path
-                  d="M16.74 20.1655C17.1973 20.1655 17.5671 19.8154 17.5671 19.3581V4.90541C17.567 4.79726 17.5455 4.6902 17.5038 4.59042C17.4621 4.49065 17.401 4.40013 17.3241 4.32409C17.2472 4.24806 17.1559 4.18802 17.0557 4.14744C16.9554 4.10687 16.8481 4.08656 16.74 4.08769C16.2823 4.08769 15.9026 4.44769 15.9026 4.90541V19.3581C15.9026 19.8154 16.2823 20.1655 16.7396 20.1655M23.1724 20.1655C23.6297 20.1655 23.9996 19.8154 23.9996 19.3581V4.90541C23.9995 4.79726 23.9779 4.6902 23.9362 4.59042C23.8945 4.49065 23.8334 4.40013 23.7565 4.32409C23.6796 4.24806 23.5884 4.18802 23.4881 4.14744C23.3879 4.10687 23.2806 4.08656 23.1724 4.08769C22.7151 4.08769 22.3354 4.44769 22.3354 4.90541V19.3581C22.3354 19.8154 22.7151 20.1655 23.1724 20.1655ZM1.401 19.7764C1.8 19.7764 2.13086 19.65 2.52043 19.4164L12.4376 13.5767C13.1284 13.1683 13.4301 12.6814 13.4301 12.1268C13.4301 11.5723 13.1284 11.0854 12.4376 10.6765L2.52086 4.83726C2.12186 4.60369 1.80086 4.47726 1.40143 4.47726C0.642857 4.47726 0 5.06098 0 6.15126V18.1024C0 19.1927 0.642 19.7764 1.401 19.7764ZM1.83 17.976C1.68386 17.976 1.56686 17.8787 1.56686 17.6841V6.56955C1.56686 6.37498 1.68386 6.27769 1.82957 6.27769C1.89814 6.27769 1.96586 6.30683 2.06314 6.36512L11.319 11.8543C11.4549 11.9323 11.5329 11.9905 11.5329 12.1268C11.5329 12.2533 11.4549 12.3214 11.3186 12.3994L2.06314 17.8885C1.97571 17.9468 1.89829 17.976 1.83 17.976Z"
-                  fill="var(--icon-color, #D5D5D5)"
-                />
-              </svg>
-            </button>
+                </svg>
+              </button>
+            </div>
           </div>
 
           <!-- Mute button -->
@@ -657,7 +646,7 @@ class SamsungTvRemoteCard extends LitElement {
   }
 
   getCardSize() {
-    return Math.ceil((468 * this._scale) / 50);
+    return 10;
   }
 
   static getConfigElement() {
@@ -667,8 +656,6 @@ class SamsungTvRemoteCard extends LitElement {
   static getStubConfig() {
     return {
       entity: "",
-      scale: 100,
-      layout: "fixed",
       haptic: true,
       use_samsungtv_smart: false,
     };
@@ -751,35 +738,6 @@ class SamsungTvRemoteCardEditor extends LitElement {
           </select>
           <span class="helper-text"
             >Select your Samsung TV media_player or remote entity</span
-          >
-        </div>
-
-        <div class="form-row">
-          <label>Layout Mode</label>
-          <select
-            .value=${this.config.layout || "fixed"}
-            @change=${(e) => this._valueChanged("layout", e.target.value)}
-          >
-            <option value="fixed" ?selected=${this.config.layout !== "responsive"}>Fixed</option>
-            <option value="responsive" ?selected=${this.config.layout === "responsive"}>Responsive</option>
-          </select>
-          <span class="helper-text"
-            >Fixed: use scale setting. Responsive: fills card width automatically</span
-          >
-        </div>
-
-        <div class="form-row">
-          <label>Scale (%)</label>
-          <input
-            type="number"
-            min="50"
-            max="200"
-            .value=${this.config.scale || 100}
-            @change=${(e) =>
-              this._valueChanged("scale", parseInt(e.target.value))}
-          />
-          <span class="helper-text"
-            >Scale the remote size (50-200%, only applies in Fixed layout mode)</span
           >
         </div>
 
