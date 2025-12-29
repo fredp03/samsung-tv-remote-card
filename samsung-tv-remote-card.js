@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.4 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.5 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -37,16 +37,18 @@ class SamsungTvRemoteCard extends LitElement {
       --text-color: #d5d5d5;
       --icon-color: #d5d5d5;
       display: block;
+      height: 100%;
     }
 
     .remote-wrapper {
       display: block;
       width: 100%;
+      height: 100%;
     }
 
     .remote {
       width: 100%;
-      aspect-ratio: 212 / 468;
+      height: 100%;
       background: var(--remote-bg);
       box-shadow: 1px 1px 3px rgba(22, 22, 22, 0.9);
       overflow: hidden;
@@ -60,18 +62,19 @@ class SamsungTvRemoteCard extends LitElement {
     /* Top control buttons (Power) */
     .control-buttons-top {
       align-self: stretch;
-      padding: 8% 4%;
+      flex: 0 0 auto;
+      padding: 16px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-start;
-      gap: 10px;
     }
 
     /* D-Pad / Navigation area - flexible layout */
     .remote-buttons {
       align-self: stretch;
       flex: 1 1 0;
-      padding: 5%;
+      min-height: 0;
+      padding: 16px;
       background: var(--button-area-bg);
       box-shadow: 1px 1px 3px rgba(44, 44, 44, 0.9);
       display: flex;
@@ -82,32 +85,29 @@ class SamsungTvRemoteCard extends LitElement {
 
     .spacer {
       flex: 1 1 0;
+      min-height: 0;
     }
 
     .dpad-container {
-      align-self: stretch;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 0;
+      gap: 4px;
     }
 
     .top-row,
     .bottom-row {
-      align-self: stretch;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 2% 0;
     }
 
     .middle-row {
-      align-self: stretch;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 2% 0;
+      gap: 24px;
     }
 
     .nav-button {
@@ -167,7 +167,8 @@ class SamsungTvRemoteCard extends LitElement {
     /* Middle control buttons (Back, Home, Play/Pause) */
     .control-buttons-middle {
       align-self: stretch;
-      padding: 18% 4%;
+      flex: 0 0 auto;
+      padding: 24px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -183,7 +184,8 @@ class SamsungTvRemoteCard extends LitElement {
     /* Bottom control (Mute) */
     .control-buttons-bottom {
       align-self: stretch;
-      padding: 3% 20%;
+      flex: 0 0 auto;
+      padding: 16px;
       display: flex;
       justify-content: center;
       align-items: center;
