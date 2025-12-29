@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.8 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.9 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -89,10 +89,9 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     .dpad-container {
-      width: 100%;
-      height: 100%;
-      max-width: 180px;
-      max-height: 180px;
+      width: 60%;
+      max-width: 200px;
+      aspect-ratio: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -101,7 +100,7 @@ class SamsungTvRemoteCard extends LitElement {
 
     .top-row,
     .bottom-row {
-      align-self: stretch;
+      width: 100%;
       flex: 1 1 0;
       display: flex;
       justify-content: center;
@@ -109,7 +108,7 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     .middle-row {
-      align-self: stretch;
+      width: 100%;
       flex: 1 1 0;
       display: flex;
       justify-content: space-between;
