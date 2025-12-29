@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.5 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.6 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -89,30 +89,34 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     .dpad-container {
+      align-self: stretch;
+      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 4px;
     }
 
     .top-row,
     .bottom-row {
+      align-self: stretch;
+      flex: 1 1 0;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
     .middle-row {
+      align-self: stretch;
+      flex: 1 1 0;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      gap: 24px;
     }
 
     .nav-button {
-      width: 38px;
-      height: 38px;
+      width: 20%;
+      aspect-ratio: 1;
       padding: 5px;
       border-radius: 7px;
       display: flex;
@@ -123,6 +127,11 @@ class SamsungTvRemoteCard extends LitElement {
       background: transparent;
       border: none;
       -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav-button svg {
+      width: 100%;
+      height: 100%;
     }
 
     .nav-button:hover {
@@ -136,8 +145,8 @@ class SamsungTvRemoteCard extends LitElement {
 
     /* Center select button with styled circle */
     .center-button {
-      width: 44px;
-      height: 44px;
+      width: 25%;
+      aspect-ratio: 1;
       padding: 0;
       border-radius: 50%;
       display: flex;
