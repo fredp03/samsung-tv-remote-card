@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.9 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.10 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -81,11 +81,6 @@ class SamsungTvRemoteCard extends LitElement {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-    }
-
-    .spacer {
-      flex: 1 1 0;
-      min-height: 0;
     }
 
     .dpad-container {
@@ -312,7 +307,6 @@ class SamsungTvRemoteCard extends LitElement {
 
           <!-- D-Pad Navigation -->
           <div class="remote-buttons">
-            <div class="spacer"></div>
             <div class="dpad-container">
               <!-- Up Row -->
               <div class="top-row">
@@ -418,7 +412,6 @@ class SamsungTvRemoteCard extends LitElement {
                 </button>
               </div>
             </div>
-            <div class="spacer"></div>
           </div>
 
           <!-- Back, Home, Play/Pause buttons -->
