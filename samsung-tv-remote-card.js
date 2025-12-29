@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.7 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.8 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -89,7 +89,7 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     .dpad-container {
-      align-self: stretch;
+      width: 100%;
       height: 100%;
       max-width: 180px;
       max-height: 180px;
