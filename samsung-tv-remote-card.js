@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.10 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.1.0 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -83,36 +83,75 @@ class SamsungTvRemoteCard extends LitElement {
       align-items: center;
     }
 
+    /* D-Pad Cross Layout */
     .dpad-container {
-      width: 60%;
-      max-width: 200px;
-      aspect-ratio: 1;
+      width: 100%;
+      max-width: 370px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
     }
 
-    .top-row,
-    .bottom-row {
-      width: 100%;
+    /* Top row containing only the up button */
+    .top-row {
+      width: 123px;
       flex: 1 1 0;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
+    /* Middle row spans full width: left, center, right */
     .middle-row {
       width: 100%;
       flex: 1 1 0;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    /* Bottom row containing only the down button */
+    .bottom-row {
+      width: 123px;
+      flex: 1 1 0;
+      display: flex;
+      justify-content: center;
       align-items: center;
     }
 
+    /* Button area backgrounds */
+    .dpad-button-area {
+      background: rgba(163, 163, 163, 0.02);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1 1 0;
+    }
+
+    .dpad-button-area.top {
+      border-radius: 5px 5px 0 0;
+    }
+
+    .dpad-button-area.bottom {
+      border-radius: 0 0 5px 5px;
+    }
+
+    .dpad-button-area.left {
+      border-radius: 5px 0 0 5px;
+    }
+
+    .dpad-button-area.right {
+      border-radius: 0 5px 5px 0;
+    }
+
+    .dpad-button-area.center {
+      border-radius: 0;
+    }
+
     .nav-button {
-      width: 20%;
-      aspect-ratio: 1;
+      width: 38px;
+      height: 38px;
       padding: 5px;
       border-radius: 7px;
       display: flex;
@@ -139,10 +178,10 @@ class SamsungTvRemoteCard extends LitElement {
       transform: scale(0.95);
     }
 
-    /* Center select button with styled circle */
+    /* Center select button with styled circle - matches Figma design */
     .center-button {
-      width: 25%;
-      aspect-ratio: 1;
+      width: 38px;
+      height: 38px;
       padding: 0;
       border-radius: 50%;
       display: flex;
@@ -305,111 +344,121 @@ class SamsungTvRemoteCard extends LitElement {
             </button>
           </div>
 
-          <!-- D-Pad Navigation -->
+          <!-- D-Pad Navigation - Cross Layout -->
           <div class="remote-buttons">
             <div class="dpad-container">
-              <!-- Up Row -->
+              <!-- Up Button Area -->
               <div class="top-row">
-                <button
-                  class="nav-button"
-                  @click=${() => this._handleButtonClick("up")}
-                  title="Up"
-                >
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div class="dpad-button-area top">
+                  <button
+                    class="nav-button"
+                    @click=${() => this._handleButtonClick("up")}
+                    title="Up"
                   >
-                    <path
-                      d="M1.52197 20.7391L14.0002 8.26087L26.4785 20.7391"
-                      stroke="var(--icon-color, #D5D5D5)"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1.52197 20.7391L14.0002 8.26087L26.4785 20.7391"
+                        stroke="var(--icon-color, #D5D5D5)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
               <!-- Middle Row: Left, Select, Right -->
               <div class="middle-row">
-                <button
-                  class="nav-button"
-                  @click=${() => this._handleButtonClick("left")}
-                  title="Left"
-                >
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div class="dpad-button-area left">
+                  <button
+                    class="nav-button"
+                    @click=${() => this._handleButtonClick("left")}
+                    title="Left"
                   >
-                    <path
-                      d="M20.239 26.4783L7.76074 14L20.239 1.52173"
-                      stroke="var(--icon-color, #D5D5D5)"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M20.239 26.4783L7.76074 14L20.239 1.52173"
+                        stroke="var(--icon-color, #D5D5D5)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
 
                 <!-- Center Select Button -->
-                <button
-                  class="center-button"
-                  @click=${() => this._handleButtonClick("enter")}
-                  title="Select"
-                ></button>
+                <div class="dpad-button-area center">
+                  <button
+                    class="center-button"
+                    @click=${() => this._handleButtonClick("enter")}
+                    title="Select"
+                  ></button>
+                </div>
 
-                <button
-                  class="nav-button"
-                  @click=${() => this._handleButtonClick("right")}
-                  title="Right"
-                >
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div class="dpad-button-area right">
+                  <button
+                    class="nav-button"
+                    @click=${() => this._handleButtonClick("right")}
+                    title="Right"
                   >
-                    <path
-                      d="M7.76074 1.52173L20.239 14L7.76074 26.4783"
-                      stroke="var(--icon-color, #D5D5D5)"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M7.76074 1.52173L20.239 14L7.76074 26.4783"
+                        stroke="var(--icon-color, #D5D5D5)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
-              <!-- Down Row -->
+              <!-- Down Button Area -->
               <div class="bottom-row">
-                <button
-                  class="nav-button"
-                  @click=${() => this._handleButtonClick("down")}
-                  title="Down"
-                >
-                  <svg
-                    width="28"
-                    height="28"
-                    viewBox="0 0 28 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <div class="dpad-button-area bottom">
+                  <button
+                    class="nav-button"
+                    @click=${() => this._handleButtonClick("down")}
+                    title="Down"
                   >
-                    <path
-                      d="M26.4785 7.26087L14.0002 19.7391L1.52197 7.26087"
-                      stroke="var(--icon-color, #D5D5D5)"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 28 28"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M26.4785 7.26087L14.0002 19.7391L1.52197 7.26087"
+                        stroke="var(--icon-color, #D5D5D5)"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
