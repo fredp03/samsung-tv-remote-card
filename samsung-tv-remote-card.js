@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.3 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.0.4 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -40,28 +40,18 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     .remote-wrapper {
-      display: inline-block;
-      transform-origin: top left;
-    }
-
-    .remote-wrapper.responsive {
       display: block;
       width: 100%;
     }
 
-    .remote-wrapper.responsive .remote {
-      width: 100%;
-      height: 100%;
-    }
-
     .remote {
       width: 100%;
-      height: 100%;
+      aspect-ratio: 212 / 468;
       background: var(--remote-bg);
       box-shadow: 1px 1px 3px rgba(22, 22, 22, 0.9);
       overflow: hidden;
       border-radius: 12px;
-      display: inline-flex;
+      display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
@@ -70,8 +60,8 @@ class SamsungTvRemoteCard extends LitElement {
     /* Top control buttons (Power) */
     .control-buttons-top {
       align-self: stretch;
-      padding: 37px 9px;
-      display: inline-flex;
+      padding: 8% 4%;
+      display: flex;
       justify-content: flex-end;
       align-items: flex-start;
       gap: 10px;
@@ -81,53 +71,49 @@ class SamsungTvRemoteCard extends LitElement {
     .remote-buttons {
       align-self: stretch;
       flex: 1 1 0;
-      padding: 22px;
+      padding: 5%;
       background: var(--button-area-bg);
       box-shadow: 1px 1px 3px rgba(44, 44, 44, 0.9);
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
     }
 
     .spacer {
-      align-self: stretch;
       flex: 1 1 0;
-      background: rgba(217, 217, 217, 0);
     }
 
     .dpad-container {
       align-self: stretch;
-      height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      gap: 0;
     }
 
     .top-row,
     .bottom-row {
       align-self: stretch;
-      flex: 1 1 0;
-      display: inline-flex;
+      display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      padding: 2% 0;
     }
 
     .middle-row {
       align-self: stretch;
-      flex: 1 1 0;
-      display: inline-flex;
+      display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 2% 0;
     }
 
     .nav-button {
       width: 38px;
       height: 38px;
-      padding-left: 5px;
-      padding-right: 5px;
+      padding: 5px;
       border-radius: 7px;
       display: flex;
       justify-content: center;
@@ -152,6 +138,7 @@ class SamsungTvRemoteCard extends LitElement {
     .center-button {
       width: 44px;
       height: 44px;
+      padding: 0;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -180,15 +167,14 @@ class SamsungTvRemoteCard extends LitElement {
     /* Middle control buttons (Back, Home, Play/Pause) */
     .control-buttons-middle {
       align-self: stretch;
-      padding: 78px 8px;
-      display: inline-flex;
+      padding: 18% 4%;
+      display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
     .icon-wrapper {
-      width: 65.33px;
-      height: 54px;
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -197,11 +183,10 @@ class SamsungTvRemoteCard extends LitElement {
     /* Bottom control (Mute) */
     .control-buttons-bottom {
       align-self: stretch;
-      padding: 13px 85px;
-      display: inline-flex;
+      padding: 3% 20%;
+      display: flex;
       justify-content: center;
-      align-items: flex-start;
-      gap: 10px;
+      align-items: center;
     }
 
     .icon-button {
@@ -287,7 +272,7 @@ class SamsungTvRemoteCard extends LitElement {
     }
 
     return html`
-      <div class="remote-wrapper responsive">
+      <div class="remote-wrapper">
         <div class="remote">
           <!-- Power Button -->
           <div class="control-buttons-top">
@@ -313,7 +298,7 @@ class SamsungTvRemoteCard extends LitElement {
             </button>
           </div>
 
-          <!-- D-Pad Navigation with flexible layout -->
+          <!-- D-Pad Navigation -->
           <div class="remote-buttons">
             <div class="spacer"></div>
             <div class="dpad-container">
@@ -326,13 +311,13 @@ class SamsungTvRemoteCard extends LitElement {
                 >
                   <svg
                     width="28"
-                    height="38"
-                    viewBox="0 0 28 38"
+                    height="28"
+                    viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M1.52197 24.7391L14.0002 12.2609L26.4785 24.7391"
+                      d="M1.52197 20.7391L14.0002 8.26087L26.4785 20.7391"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -351,13 +336,13 @@ class SamsungTvRemoteCard extends LitElement {
                 >
                   <svg
                     width="28"
-                    height="38"
-                    viewBox="0 0 28 38"
+                    height="28"
+                    viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M20.239 30.9783L7.76074 18.5L20.239 6.02173"
+                      d="M20.239 26.4783L7.76074 14L20.239 1.52173"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -371,29 +356,7 @@ class SamsungTvRemoteCard extends LitElement {
                   class="center-button"
                   @click=${() => this._handleButtonClick("enter")}
                   title="Select"
-                >
-                  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <filter id="select-filter" x="0" y="0" width="44" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                        <feOffset dx="-1" dy="-1" />
-                        <feGaussianBlur stdDeviation="1" />
-                        <feColorMatrix type="matrix" values="0 0 0 0 0.467 0 0 0 0 0.467 0 0 0 0 0.467 0 0 0 0.5 0" />
-                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1" />
-                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                        <feOffset dx="1" dy="1" />
-                        <feGaussianBlur stdDeviation="1" />
-                        <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
-                        <feBlend mode="normal" in2="effect1" result="effect2" />
-                        <feBlend mode="normal" in="SourceGraphic" in2="effect2" result="shape" />
-                      </filter>
-                    </defs>
-                    <g filter="url(#select-filter)">
-                      <circle cx="22" cy="22" r="19" fill="#D5D5D5" />
-                    </g>
-                  </svg>
-                </button>
+                ></button>
 
                 <button
                   class="nav-button"
@@ -402,13 +365,13 @@ class SamsungTvRemoteCard extends LitElement {
                 >
                   <svg
                     width="28"
-                    height="38"
-                    viewBox="0 0 28 38"
+                    height="28"
+                    viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M7.76074 6.02173L20.239 18.5L7.76074 30.9783"
+                      d="M7.76074 1.52173L20.239 14L7.76074 26.4783"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
@@ -427,13 +390,13 @@ class SamsungTvRemoteCard extends LitElement {
                 >
                   <svg
                     width="28"
-                    height="38"
-                    viewBox="0 0 28 38"
+                    height="28"
+                    viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M26.4785 12.2609L14.0002 24.7391L1.52197 12.2609"
+                      d="M26.4785 7.26087L14.0002 19.7391L1.52197 7.26087"
                       stroke="var(--icon-color, #D5D5D5)"
                       stroke-width="3"
                       stroke-linecap="round"
