@@ -57,17 +57,17 @@ A sleek, modern Samsung TV remote card for Home Assistant. Features a beautiful 
 ```yaml
 type: custom:samsung-tv-remote-card
 entity: media_player.samsung_tv
-layout: fixed
-scale: 100
 haptic: true
 use_samsungtv_smart: false
 ```
 
-**Responsive Layout Example** (fills card width):
+**Custom Sizing Example**:
 ```yaml
 type: custom:samsung-tv-remote-card
 entity: media_player.samsung_tv
-layout: responsive
+width: 200px
+height: 500px
+scale: 0.9
 ```
 
 ### Options
@@ -75,10 +75,37 @@ layout: responsive
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `entity` | string | **Required** | Your Samsung TV `media_player` or `remote` entity |
-| `layout` | string | `fixed` | Layout mode: `fixed` (use scale setting) or `responsive` (fills card width, height auto-adjusts) |
-| `scale` | number | `100` | Scale the remote size (50-200%), only applies in `fixed` layout mode |
 | `haptic` | boolean | `true` | Enable haptic feedback (vibration) on button presses |
 | `use_samsungtv_smart` | boolean | `false` | Enable if using the [SamsungTV Smart Component](https://github.com/ollo69/ha-samsungtv-smart) custom integration |
+| `width` | string | `100%` | Card width (e.g., `200px`, `50%`, `auto`) |
+| `height` | string | `100%` | Card height (e.g., `500px`, `100%`, `auto`) |
+| `max_width` | string | `none` | Maximum width constraint |
+| `min_height` | string | `400px` | Minimum height constraint |
+| `scale` | number | `1` | Scale the remote (e.g., `0.8` = 80%, `1.2` = 120%) |
+
+### CSS Custom Properties
+
+For advanced styling, you can also set these CSS custom properties from outside the card (e.g., via card-mod or theme):
+
+```css
+--samsung-remote-width: 200px;
+--samsung-remote-height: 500px;
+--samsung-remote-max-width: 300px;
+--samsung-remote-min-height: 400px;
+--samsung-remote-scale: 0.9;
+```
+
+**Example with card-mod**:
+```yaml
+type: custom:samsung-tv-remote-card
+entity: media_player.samsung_tv
+card_mod:
+  style: |
+    :host {
+      --samsung-remote-width: 180px;
+      --samsung-remote-height: 450px;
+    }
+```
 
 ## Supported Keys
 
@@ -121,18 +148,30 @@ entity: media_player.samsung_tv
 use_samsungtv_smart: true
 ```
 
-## Scaling Examples
+## Sizing Examples
 
 ```yaml
-# Small remote (75%)
+# Small remote with fixed dimensions
 type: custom:samsung-tv-remote-card
 entity: remote.samsung_tv
-scale: 75
+width: 180px
+height: 450px
 
-# Large remote (150%)
+# Scaled down remote (80%)
 type: custom:samsung-tv-remote-card
 entity: remote.samsung_tv
-scale: 150
+scale: 0.8
+
+# Scaled up remote (120%)
+type: custom:samsung-tv-remote-card
+entity: remote.samsung_tv
+scale: 1.2
+
+# Constrained width with auto height
+type: custom:samsung-tv-remote-card
+entity: remote.samsung_tv
+max_width: 250px
+height: auto
 ```
 
 ## Troubleshooting

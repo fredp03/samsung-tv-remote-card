@@ -5,7 +5,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 console.info(
-  `%c SAMSUNG-TV-REMOTE-CARD %c v1.1.1 `,
+  `%c SAMSUNG-TV-REMOTE-CARD %c v1.2.0 `,
   "color: white; background: #555; font-weight: bold;",
   "color: white; background: #1428a0; font-weight: bold;"
 );
@@ -36,14 +36,26 @@ class SamsungTvRemoteCard extends LitElement {
       --button-area-bg: linear-gradient(135deg, #383838 100%, #3e3e3e 0%);
       --text-color: #d5d5d5;
       --icon-color: #d5d5d5;
+      /* Configurable sizing via CSS custom properties */
+      --remote-width: var(--samsung-remote-width, 100%);
+      --remote-height: var(--samsung-remote-height, 100%);
+      --remote-max-width: var(--samsung-remote-max-width, none);
+      --remote-min-height: var(--samsung-remote-min-height, 400px);
+      --remote-scale: var(--samsung-remote-scale, 1);
       display: block;
-      height: 100%;
+      width: var(--remote-width);
+      height: var(--remote-height);
+      max-width: var(--remote-max-width);
+      min-height: var(--remote-min-height);
+      box-sizing: border-box;
     }
 
     .remote-wrapper {
       display: block;
       width: 100%;
       height: 100%;
+      transform: scale(var(--remote-scale));
+      transform-origin: top center;
     }
 
     .remote {
@@ -280,8 +292,42 @@ class SamsungTvRemoteCard extends LitElement {
     this.config = {
       haptic: true,
       use_samsungtv_smart: false,
+      // Sizing options - can be set via card config
+      width: null,
+      height: null,
+      max_width: null,
+      min_height: null,
+      scale: null,
       ...config,
     };
+    
+    // Apply sizing from config to CSS custom properties
+    this._applySizing();
+  }
+  
+  _applySizing() {
+    if (this.config.width) {
+      this.style.setProperty('--samsung-remote-width', this.config.width);
+    }
+    if (this.config.height) {
+      this.style.setProperty('--samsung-remote-height', this.config.height);
+    }
+    if (this.config.max_width) {
+      this.style.setProperty('--samsung-remote-max-width', this.config.max_width);
+    }
+    if (this.config.min_height) {
+      this.style.setProperty('--samsung-remote-min-height', this.config.min_height);
+    }
+    if (this.config.scale) {
+      this.style.setProperty('--samsung-remote-scale', this.config.scale);
+    }
+  }
+  
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has('config')) {
+      this._applySizing();
+    }
   }
 
   render() {
@@ -652,6 +698,11 @@ class SamsungTvRemoteCard extends LitElement {
       entity: "",
       haptic: true,
       use_samsungtv_smart: false,
+      width: null,
+      height: null,
+      max_width: null,
+      min_height: null,
+      scale: null,
     };
   }
 }
@@ -765,6 +816,71 @@ class SamsungTvRemoteCardEditor extends LitElement {
           </div>
           <span class="helper-text"
             >Enable if using the ha-samsungtv-smart custom integration</span
+          >
+        </div>
+        
+        <div class="form-row">
+          <label>Sizing Options</label>
+          <span class="helper-text"
+            >Configure card dimensions (use CSS values like "200px", "100%", "auto")</span
+          >
+        </div>
+        
+        <div class="form-row">
+          <label for="width">Width</label>
+          <input
+            type="text"
+            id="width"
+            .value=${this.config.width || ""}
+            @input=${(e) => this._valueChanged("width", e.target.value || null)}
+            placeholder="e.g., 200px, 100%, auto"
+          />
+        </div>
+        
+        <div class="form-row">
+          <label for="height">Height</label>
+          <input
+            type="text"
+            id="height"
+            .value=${this.config.height || ""}
+            @input=${(e) => this._valueChanged("height", e.target.value || null)}
+            placeholder="e.g., 500px, 100%, auto"
+          />
+        </div>
+        
+        <div class="form-row">
+          <label for="max_width">Max Width</label>
+          <input
+            type="text"
+            id="max_width"
+            .value=${this.config.max_width || ""}
+            @input=${(e) => this._valueChanged("max_width", e.target.value || null)}
+            placeholder="e.g., 300px"
+          />
+        </div>
+        
+        <div class="form-row">
+          <label for="min_height">Min Height</label>
+          <input
+            type="text"
+            id="min_height"
+            .value=${this.config.min_height || ""}
+            @input=${(e) => this._valueChanged("min_height", e.target.value || null)}
+            placeholder="e.g., 400px (default)"
+          />
+        </div>
+        
+        <div class="form-row">
+          <label for="scale">Scale</label>
+          <input
+            type="text"
+            id="scale"
+            .value=${this.config.scale || ""}
+            @input=${(e) => this._valueChanged("scale", e.target.value || null)}
+            placeholder="e.g., 0.8, 1, 1.2"
+          />
+          <span class="helper-text"
+            >Scale the entire remote (1 = 100%, 0.8 = 80%, etc.)</span
           >
         </div>
       </div>
